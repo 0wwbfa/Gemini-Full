@@ -2,6 +2,14 @@ import time
 import os
 import joblib
 import streamlit as st
+
+st.set_page_config(
+    page_title="Gemini-Pro Chatbot",
+    page_icon=":alien:",  # Favicon emoji
+    layout="wide",  # Page layout option
+    menu_items={}
+)
+
 import google.generativeai as genai
 from streamlit_local_storage import LocalStorage
 from dotenv import load_dotenv
