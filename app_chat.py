@@ -3,6 +3,7 @@ import os
 import joblib
 import streamlit as st
 import google.generativeai as genai
+from streamlit_local_storage import LocalStorage
 from dotenv import load_dotenv
 load_dotenv()
 GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY')
@@ -34,7 +35,26 @@ generation_config = {
   "max_output_tokens": 8192,
   "response_mime_type": "text/plain",
 }
+localS = LocalStorage() 
 
+# Get the Google API key from the local storage
+GOOGLE_API_KEY = localS.getItem('gak')
+
+# If the Google API key is not present in the local storage, open the sidebar to input it
+if (GOOGLE_API_KEY==None):
+    # Sidebar to input Google API Key
+    with st.sidebar:
+        st.sidebar.title("Gemini-Pro Configuration")
+        GOOGLE_API_KEY = st.sidebar.text_input("Enter your Google API Key", type="password")
+
+    # Close the sidebar when the Google API key is entered
+    if GOOGLE_API_KEY:
+        st.session_state.sidebar_state = 'collapsed'
+
+# Check if API key is provided
+if not GOOGLE_API_KEY:
+    st.error("Please enter your Google API Key.")
+    st.stop()
 new_chat_id = f'{time.time()}'
 MODEL_ROLE = 'ai'
 AI_AVATAR_ICON = '✨'
@@ -98,7 +118,7 @@ st.session_state.model = genai.GenerativeModel(
 st.session_state.chat = st.session_state.model.start_chat(
     history=st.session_state.gemini_history,
 )
-
+localS.setItem('gak', GOOGLE_API_KEY)
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(
