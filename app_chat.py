@@ -98,16 +98,6 @@ with st.sidebar:
 
 #st.write('# Chat with Gemini')
 
-"""
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
-"""
-
 # Chat history (allows to ask multiple questions)
 try:
     st.session_state.messages = joblib.load(
