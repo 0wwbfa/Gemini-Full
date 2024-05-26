@@ -6,8 +6,6 @@ import google.generativeai as genai
 from streamlit_local_storage import LocalStorage
 from dotenv import load_dotenv
 load_dotenv()
-GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY')
-genai.configure(api_key=GOOGLE_API_KEY)
 
 safety_settings = [
   {
@@ -55,6 +53,9 @@ if (GOOGLE_API_KEY==None):
 if not GOOGLE_API_KEY:
     st.error("Please enter your Google API Key.")
     st.stop()
+
+genai.configure(api_key=GOOGLE_API_KEY)
+
 new_chat_id = f'{time.time()}'
 MODEL_ROLE = 'ai'
 AI_AVATAR_ICON = '✨'
